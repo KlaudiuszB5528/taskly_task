@@ -27,3 +27,20 @@ it('sends only writable task fields on creation', async () => {
     }),
   })
 })
+
+it('sends a partial update without read-only fields', async () => {
+  vi.mocked(request).mockResolvedValue(todoFixture)
+  await expect(
+    todosApi.update(todoFixture.id, { title: 'Renamed' }),
+  ).resolves.toEqual(todoFixture)
+  expect(request).toHaveBeenCalledWith('/todos/7', {
+    method: 'PATCH',
+    body: JSON.stringify({ title: 'Renamed' }),
+  })
+})
+
+it('deletes a task by id', async () => {
+  vi.mocked(request).mockResolvedValue(undefined)
+  await expect(todosApi.remove(todoFixture.id)).resolves.toBeUndefined()
+  expect(request).toHaveBeenCalledWith('/todos/7', { method: 'DELETE' })
+})

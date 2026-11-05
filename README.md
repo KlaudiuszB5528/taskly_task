@@ -80,3 +80,7 @@ Coverage — `backend/coverage/html/index.html`:
 ```sh
 python -m pytest --cov=app --cov-report=term-missing --cov-report=html
 ```
+
+## Pull request tests
+
+Pull requests run a test agent that decides whether the change needs unit tests, writes them, runs them, and posts the result on the pull request. See [SOLUTION.md](SOLUTION.md).
