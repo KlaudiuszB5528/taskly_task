@@ -4,6 +4,7 @@ from fastapi import APIRouter, HTTPException, Path, Response
 
 from ...api.dependencies import Repository
 from .schemas import Todo, TodoCreate, TodoUpdate
+from .summary import TodoSummary, summarize
 
 router = APIRouter(prefix="/api/todos", tags=["todos"])
 TodoId = Annotated[int, Path(gt=0)]
@@ -17,6 +18,11 @@ def list_todos(repo: Repository):
 @router.post("", response_model=Todo, status_code=201)
 def create_todo(payload: TodoCreate, repo: Repository):
     return repo.create(payload)
+
+
+@router.get("/summary", response_model=TodoSummary)
+def read_summary(repo: Repository):
+    return summarize(repo.list())
 
 
 @router.get("/{todo_id}", response_model=Todo)
